@@ -4,6 +4,10 @@ const router = express.Router();
 
 console.log('Router loaded!')
 
-module.exports = router;
 
 router.get('/', homeController.home); 
+router.use('/users', require('./users'));
+
+
+
+module.exports = router;
