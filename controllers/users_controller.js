@@ -101,7 +101,7 @@ module.exports.createSession = async function(req, res){
 
 module.exports.destroySession = function(req, res){
     req.logout(function(err){
-        console.log(err,'Error in logging out');
+        return console.log(err,'Error in logging out');
     });
     return res.redirect('/');
 }
