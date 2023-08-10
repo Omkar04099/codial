@@ -6,13 +6,15 @@ const User = require('../models/users');
 
 // Authentication using passport
 passport.use(new LocalStrategy({
-    usernameField: 'email'
+    usernameField: 'email',
+    passReqToCallback: true
     },
-    async function(email, password, done){
+    async function(req, email, password, done){
+        
         // Find a user and establish identity
         let userFound = await User.findOne({email:email});
         if(!userFound || userFound.password != password){
-            console.log('Invalid Username/Password');
+            req.flash('error', 'Invalid Username/Password');
             return done(null, false);
         }
         return done(null, userFound);
@@ -30,6 +32,7 @@ passport.deserializeUser(async function(id, done){
     if(findUser){
         return done(null, findUser);
     }
+    req.flash('error', 'User not found!');
     console.log('Error in finding user --> Passport')
     done(null, false);
 });
@@ -42,6 +45,7 @@ passport.checkAuthentication = function(req, res, next){
     }
 
     // if user is not signed in
+    req.flash('error', 'Please sign in first!');
     return res.redirect('/sign-in');
 }
 

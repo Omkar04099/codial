@@ -1,8 +1,26 @@
 <link rel="stylesheet" href="/css/users.css">
 
-        <h1>Codial / Profile page</h1>
+        <div class="container">
+                <img src="<%= user.avatar%>" alt="<%= user.name%>" width="100">
 
-        <h3>Name: <%= user.name %></h6>
-        <h3>Email: <%= user.email %></h6>
+                <% if (user.id == profile_user.id) {%>
+                        <!-- if user matches then show the form -->
+                        <div class="form-container">
+                                <form action="/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post">
+                                        <input type="text" name="name" placeholder="Your Name" value="<%= profile_user.name%>" required>
+                                        <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email%>" required>
+        
+                                        <input type="file" name="avatar" placeholder="Profile Picture">
+                                        <input type="submit" value="Update">
+                                </form>
+                        </div>
+                        
 
-     
+                <%} else{%>
+                        <!-- else only show profile info -->
+                        <h3>Name: <%= profile_user.name %></h6>
+                        <h3>Email: <%= profile_user.email %></h6>
+                <%}%>
+        </div>
+
+        
