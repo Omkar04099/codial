@@ -23,7 +23,7 @@ module.exports.destroy =async function(req, res){
     try{
      let post = await Post.findById(req.params.id);
      //.id means converting object into string
-    //  if(post.user == req.user.id){
+     if(post.user == req.user.id){
          post.deleteOne({post:req.params.id});
  
          await Comment.deleteMany({post:req.params.id});
@@ -34,10 +34,12 @@ module.exports.destroy =async function(req, res){
             message: "Post and Associated comments deleted successfully!"
          });
      }
-    //  else{
-    //      req.flash('error', 'You cannot delete this post!');
-    //      return res.redirect('back');
-    //  }
+     else{
+         return res.json(401, {
+            message: 'You cannot delete this post!'
+         });
+     }
+    }
     catch(err){
         console.log('*********', err); 
          res.json(500, {
