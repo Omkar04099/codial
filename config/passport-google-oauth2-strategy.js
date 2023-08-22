@@ -14,7 +14,7 @@ passport.use(new googleStrategy({
         try{
             // find a user 
             let user = await User.findOne({email: profile.emails[0].value}).exec();
-            console.log(accessToken, refreshToken);
+            // console.log(accessToken, refreshToken);
             // console.log(profile);
             if(user){
                 // if found set this user as req.user

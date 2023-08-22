@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/home.css">
+<link rel="stylesheet" href="/css/chat_box.css">
 
 <div id="home-container">
     <section id="feed-posts">
@@ -29,7 +30,41 @@
             </p>
             <%}%>
     </section>
+    
+    <%- include('_chat_box') -%>
 
+    <!-- <aside id="chatBox">
+        <div class="container">
+            <div class="message-container">
+                <div class="mini-container1">
+                    <div class="other-msg">
+                        Other Message
+                    </div>
+                </div>
+                <div class="mini-container2">
+                    <div class="self-msg">
+                        Self Message
+                    </div>
+                </div>
+            </div>
+
+        <div class="input-container">
+            <form action="">
+            <input type="text" id="chat-input" placeholder="Enter message here">
+            <input type="submit" id="send-btn" value="Send">
+            </form>
+        </div>
+        </div>
+    </aside> -->
 </div>
 <script src="/js/home_post_comments.js" ></script>
 <script src="/js/home_posts.js" ></script>
+
+<!-- CHANGE :: import the script file for toggle likes, also run it over for the already present posts and comments on the page -->
+<script src="js/toggle_likes.js"></script>
+<script>
+    $('.toggle-like-button').each(function(){
+        let self = this;
+        let toggleLike = new ToggleLike(self);
+    });
+</script>

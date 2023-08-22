@@ -1,7 +1,11 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
-const { post } = require('../routes');
+// const { post } = require('../routes');
+// const queue = require('../config/kue')
 const commentsMailer = require('../mailers/comments_mailer');
+const commentEmailWorker = require('../workers/comment_email_worker');
+const Like = require('../models/like');
+
 
 module.exports.create = async function (req, res) {
     try {
@@ -16,7 +20,12 @@ module.exports.create = async function (req, res) {
             findPost.save();
 
             comment = await comment.populate('user');
-            commentsMailer.newComments(comment)
+            commentsMailer.newComments(comment);
+            // let job = queueMicrotask.create('emails', comment).save(function(err){
+            //     if(err){return console.log('error in creating a queue');}
+
+            //     console.log(job.id);
+            // });
 
             if(req.xhr){
                 return res.status(200).json({
@@ -44,6 +53,10 @@ module.exports.destroy = async function (req, res) {
             let postId = comment.post;
 
             comment.deleteOne({ comment: req.params.id });
+
+            let post = Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}});
+
+            await Like.deleteMany({likeable: comment_id, onModel: 'Comment'});
 
             if(req.xhr){
                 return res.status(200).json({
